@@ -1,0 +1,30 @@
+{
+  "name": "pie-slice-problem",
+  "version": "1.0.0",
+  "description": "pie slice problem generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll --verbose",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/navarrojandg/pie-slice-problem.git"
+  },
+  "keywords": [
+    "pie",
+    "slice",
+    "problem",
+    "generator"
+  ],
+  "author": "jan derrick navarro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/navarrojandg/pie-slice-problem/issues"
+  },
+  "homepage": "https://github.com/navarrojandg/pie-slice-problem#readme",
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "jest": "^26.6.1"
+  }
+}
