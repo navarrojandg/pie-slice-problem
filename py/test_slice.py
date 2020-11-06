@@ -18,3 +18,12 @@ class TestSlice:
     s.rotate()
     assert s.__str__() == '2,3,1'
   
+  def test_getitem(self):
+    s = Slice(1,2,3)
+    assert s[0] == 1
+    assert s[1] == 2
+    assert s[2] == 3
+    s.rotate()
+    assert s[0] == 3
+    assert s[1] == 1
+    assert s[2] == 2
