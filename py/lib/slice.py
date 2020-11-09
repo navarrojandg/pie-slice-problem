@@ -1,6 +1,7 @@
 from collections import deque
 
 class Slice:
+  count = 0
   def __init__(self, *args):
     self.sides = None
     if (all(isinstance(i, int) for i in args) and len(args) == 3):
@@ -8,9 +9,13 @@ class Slice:
     
     if (type(args[0]) == str):
       self.sides = deque([int(s) for s in args[0].split(',')])
+    Slice.count += 1
+    self.id = str(Slice.count)
+    self.rotations = 0
+    self.checked = False
   
   def __str__(self):
-    return ','.join(str(i) for i in self.sides)
+    return f'id[{self.id}] ' + ','.join(str(i) for i in self.sides) + f' R{self.rotations}'
   
   def __len__(self):
     return len(self.sides)
@@ -23,3 +28,4 @@ class Slice:
 
   def rotate(self):
     self.sides.rotate(1)
+    self.rotations += 1

@@ -2,3 +2,4 @@ node_modules
 dataset.txt
 __pycache__
 *.pyc
+.pytest_cache
