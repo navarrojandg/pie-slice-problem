@@ -15,7 +15,7 @@ class Slice:
     self.checked = False
   
   def __str__(self):
-    return f'id[{self.id}] ' + ','.join(str(i) for i in self.sides) + f' R{self.rotations}'
+    return f'id[{self.id}]\t\t' + '\t'.join(str(i) for i in self.sides) + f'\tR{self.rotations}'
   
   def __len__(self):
     return len(self.sides)
@@ -29,3 +29,9 @@ class Slice:
   def rotate(self):
     self.sides.rotate(1)
     self.rotations += 1
+  
+  def reset(self):
+    self.checked = False
+    while(self.rotations % 3 != 0):
+      self.rotate()
+    self.rotations = 0

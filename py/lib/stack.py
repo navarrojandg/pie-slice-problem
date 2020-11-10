@@ -27,17 +27,17 @@ class Stack:
   def push(self, slice: Slice):
     self.slices.insert(0, slice)
   
-  def pop(self) -> Slice:
-    return self.slices.pop()
+  def pop(self, i=-1) -> Slice:
+    return self.slices.pop(i)
 
-  def isValid(self) -> (bool, int):
+  def validate(self) -> bool:
     sides = [[], [], []]
     for _slice in self:
       for j, color in enumerate(_slice):
         if (color in sides[j]):
-          return False, _slice.id
+          return False
         sides[j].append(color)
-    return True, None
+    return True
   
   def fromArray(self, arr):
     for s in arr:
@@ -54,6 +54,10 @@ class Stack:
   
   def delSliceById(self, id):
     self.slices = list(filter(lambda s: s.id != id, self.slices))
+  
+  def reset(self):
+    for s in self.slices:
+      s.reset()
 
 def stacksFromFile(filename) -> Dict[str, Stack]:
   dirname = os.path.dirname(os.path.realpath('__file__'))
@@ -68,31 +72,32 @@ def stacksFromFile(filename) -> Dict[str, Stack]:
       'puzzle4': Stack().fromArray(dataset['puzzle4'])
     }
 
-def stackSliceAndValidate(_slice:Slice, _stack:Stack):
+def stackSliceAndValidate(_slice: Slice, _stack: Stack):
   _stack.push(_slice)
-  valid, badSliceIndex = _stack.isValid()
+  valid = _stack.validate()
 
-  if(not valid):
-    s = _stack.getSliceById(badSliceIndex)
-    while(s.rotations < 3 and not valid):
-      valid, badSliceIndex = rotateSliceAndValidate(s, _stack)
-
-  return valid, badSliceIndex
+  while(_slice.rotations < 3 and not valid):
+    valid = rotateSliceAndValidate(_slice, _stack)
+  
+  return valid
   
 def rotateSliceAndValidate(_slice:Slice, _stack:Stack):
   _slice.rotate()
-  return _stack.isValid()
+  return _stack.validate()
+
+def allStackChecked(stack: Stack):
+  return all(map(lambda s: s.checked, stack))
 
 def solve(stack: Stack) -> Stack:
   solutionStack = Stack()
-  solutionStack.push(stack.pop())  
+  solutionStack.push(stack.pop())
 
-  while(not all(map(lambda s: s.checked, stack))):
-    valid, badSliceIndex = stackSliceAndValidate(stack.pop(), solutionStack)
-    if (not valid):
-      _slice = solutionStack.getSliceById(badSliceIndex)
-      _slice.checked = True
-      solutionStack.delSliceById(_slice.id)
+  while(not allStackChecked(stack)):
+    valid = stackSliceAndValidate(stack.pop(), solutionStack)
+    if not valid:
+      _slice = solutionStack.pop(0)
+      if _slice.rotations == 3:
+        _slice.checked = True
       stack.push(_slice)
 
   return solutionStack
