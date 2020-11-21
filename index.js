@@ -37,5 +37,11 @@ for (let i = 1; i <= colors; i++) {
   };
 };
 
+// reverse the order of the puzzles
+puzzles.puzzle1 = puzzles.puzzle1.reverse();
+puzzles.puzzle2 = puzzles.puzzle2.reverse();
+puzzles.puzzle3 = puzzles.puzzle3.reverse();
+puzzles.puzzle4 = puzzles.puzzle4.reverse();
+
 fs.writeFileSync(filename, JSON.stringify(puzzles, null, 2), 'utf8');
 console.log(`output puzzle dataset for ${colors} colors and ${slices} slices and ${repeats} repeats to:\n${filename}`);
