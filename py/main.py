@@ -1,19 +1,17 @@
-from lib.stack import stacksFromFile
-from lib.stack import solve
+from lib.solver import stacksFromFile
+from lib.solver import solve
 from lib.stack import Stack
 from lib.slice import Slice
 if __name__ == "__main__":
   puzzles = stacksFromFile('../dataset.txt')
+  puzzleSet = puzzles['one']
+  # puzzleSet = puzzles['two']
+  # puzzleSet = puzzles['three']
+  # puzzleSet = puzzles['four']
 
-  print('1st round')
-  print(solve(puzzles['puzzle2']))
-  print()
-  print(puzzles['puzzle2'])
-  print()
+  print('solution')
+  print(solve(puzzleSet))
+  print('\n')
 
-  print('2nd round')
-  puzzles['puzzle2'].reset()
-  print(solve(puzzles['puzzle2']))
-  print()
-  print(puzzles['puzzle2'])
-  print()
+  print('obstacles')
+  print(puzzleSet)
