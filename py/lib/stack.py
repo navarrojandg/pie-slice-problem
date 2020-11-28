@@ -28,29 +28,28 @@ class Stack:
     return self.slices.pop(i)
 
   def validate(self) -> bool:
-    sides = [[], [], []]
+    faces = {
+      'face0': {},
+      'face1': {},
+      'face2': {}
+    }
     for _slice in self:
-      for j, color in enumerate(_slice):
-        if (color in sides[j]):
-          return False
-        sides[j].append(color)
+      if f'{_slice[0]}' in faces[f'face{0}']:
+        return False
+      if f'{_slice[1]}' in faces[f'face{1}']:
+        return False
+      if f'{_slice[2]}' in faces[f'face{2}']:
+        return False
+      faces[f'face{0}'][f'{_slice[0]}'] = True
+      faces[f'face{1}'][f'{_slice[1]}'] = True
+      faces[f'face{2}'][f'{_slice[2]}'] = True
     return True
+
   
   def fromArray(self, arr):
     for s in arr:
       self.push(Slice(s))
     return self
-
-  def getSliceById(self, id) -> Slice:
-    if(id is None): return None
-    result = list(filter(lambda s: s.id == id, self.slices))
-    if len(result) > 0:
-      return result[0]
-    else:
-      return None
-  
-  def delSliceById(self, id):
-    self.slices = list(filter(lambda s: s.id != id, self.slices))
   
   def reset(self):
     for s in self.slices:
