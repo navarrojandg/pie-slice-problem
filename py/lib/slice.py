@@ -3,7 +3,7 @@ from collections import deque
 class Slice:
   count = 0
   def __init__(self, *args):
-    self.sides = None
+    self.sides = deque([0,0,0])
     if (all(isinstance(i, int) for i in args) and len(args) == 3):
       self.sides = deque([int(s) for s in args])
     
@@ -35,3 +35,22 @@ class Slice:
     while(self.rotations % 3 != 0):
       self.rotate()
     self.rotations = 0
+
+  def hasColor(self, color):
+    if self[0] == color:
+      return 0
+    if self[1] == color:
+      return 1
+    if self[2] == color:
+      return 2
+    return -1
+  
+  def isInColorRange(self, start, end):
+    bounds = range(start, end+1)
+    if self[0] not in bounds:
+      return False
+    if self[1] not in bounds:
+      return False
+    if self[2] not in bounds:
+      return False
+    return True
