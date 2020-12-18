@@ -13,6 +13,7 @@ class Slice:
     self.id = str(Slice.count)
     self.rotations = 0
     self.checked = False
+    self.sidesCache = self.sides
   
   def __str__(self):
     return f'id[{self.id}]\t\t' + '\t'.join(str(i) for i in self.sides) + f'\tR{self.rotations}'
@@ -26,14 +27,13 @@ class Slice:
   def __iter__(self):
     return iter(self.sides)
 
-  def rotate(self):
-    self.sides.rotate(1)
-    self.rotations += 1
+  def rotate(self, count=1):
+    self.sides.rotate(count)
+    self.rotations += count
   
   def reset(self):
     self.checked = False
-    while(self.rotations % 3 != 0):
-      self.rotate()
+    self.sides = self.sidesCache
     self.rotations = 0
 
   def hasColor(self, color):

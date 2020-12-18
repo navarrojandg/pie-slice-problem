@@ -12,7 +12,8 @@ def solve(stack: Stack):
   return False
 
 def getPermArray(stackLength):
-  if str(stackLength) in permutationArrayCache: return permutationArrayCache[str(stackLength)]
+  if str(stackLength) in permutationArrayCache: 
+    return permutationArrayCache[str(stackLength)]
   permuations = []
   for i in range(3**stackLength):
     for j in range(stackLength):

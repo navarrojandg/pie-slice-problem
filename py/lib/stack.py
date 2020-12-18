@@ -68,8 +68,7 @@ class Stack:
     # need to be rotated how many times
     self.reset()
     for i in range(len(config)):
-      for j in range(config[i]):
-        self[i].rotate()
+      self[i].rotate(config[i])
 
 
   @staticmethod
