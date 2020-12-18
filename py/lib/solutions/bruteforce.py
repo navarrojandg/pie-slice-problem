@@ -1,6 +1,8 @@
 from lib.slice import Slice
 from lib.stack import Stack 
 
+permutationArrayCache = {}
+
 def solve(stack: Stack):
   permutationArray = getPermArray(len(stack))
   for p in permutationArray:
@@ -10,6 +12,7 @@ def solve(stack: Stack):
   return False
 
 def getPermArray(stackLength):
+  if str(stackLength) in permutationArrayCache: return permutationArrayCache[str(stackLength)]
   permuations = []
   for i in range(3**stackLength):
     for j in range(stackLength):
@@ -17,4 +20,5 @@ def getPermArray(stackLength):
         permuations.append([int(i/3**j % 3)])
       else:
         permuations[-1].append(int(i/3**j % 3))
+  permutationArrayCache[str(stackLength)] = permuations
   return permuations
