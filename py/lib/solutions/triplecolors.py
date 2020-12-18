@@ -3,6 +3,7 @@ from lib.stack import Stack
 from lib.solutions import bruteforce
 
 def run(stack: Stack) -> Stack:
+  upperBound = len(stack)
   for i in range(len(stack)):
     copy = stack.copy()
     tempStack = Stack()
@@ -12,9 +13,12 @@ def run(stack: Stack) -> Stack:
       if copy[j].hasColor(a) > -1:
         tempStack.push(copy[j])
     if bruteforce.solve(tempStack) is False:
-      print(tempStack)
-      print(len(tempStack))
-      print('\n')
+      if upperBound > len(tempStack):
+        run(tempStack)
+      else:
+        print(tempStack)
+        print(len(tempStack))
+        print('\n')
   
   for i in range(len(stack)):
     copy = stack.copy()
@@ -26,9 +30,12 @@ def run(stack: Stack) -> Stack:
       if copy[j].hasColor(a) > -1 or copy[j].hasColor(b) > -1:
         tempStack.push(copy[j])
     if bruteforce.solve(tempStack) is False:
-      print(tempStack)
-      print(len(tempStack))
-      print('\n')
+      if upperBound > len(tempStack):
+        run(tempStack)
+      else:
+        print(tempStack)
+        print(len(tempStack))
+        print('\n')
 
   for i in range(len(stack)):
     copy = stack.copy()
@@ -43,8 +50,11 @@ def run(stack: Stack) -> Stack:
          copy[j].hasColor(c) > -1:
         tempStack.push(copy[j])
     if bruteforce.solve(tempStack) is False:
-      print(tempStack)
-      print(len(tempStack))
-      print('\n')
+      if upperBound > len(tempStack):
+        run(tempStack)
+      else:
+        print(tempStack)
+        print(len(tempStack))
+        print('\n')
 
     

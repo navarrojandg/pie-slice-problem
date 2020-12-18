@@ -3,13 +3,11 @@ from lib.stack import Stack
 
 def solve(stack: Stack):
   permutationArray = getPermArray(len(stack))
-  hasSolution = False
   for p in permutationArray:
     stack.configure(p)
     if stack.validate() is True:
-      hasSolution = True
-      break
-  return hasSolution
+      return True
+  return False
 
 def getPermArray(stackLength):
   permuations = []
