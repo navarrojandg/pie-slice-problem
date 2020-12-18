@@ -1,21 +1,5 @@
 from lib.slice import Slice
 from lib.stack import Stack
-from typing import Dict
-import os
-import json
-
-def stacksFromFile(filename) -> Dict[str, Stack]:
-  dirname = os.path.dirname(os.path.realpath('__file__'))
-  filepath = os.path.join(dirname, filename)
-  
-  with open(filepath) as f:
-    dataset = json.load(f)
-    return {
-      'one': Stack().fromArray(dataset['one']),
-      'two': Stack().fromArray(dataset['two']),
-      'three': Stack().fromArray(dataset['three']),
-      'four': Stack().fromArray(dataset['four'])
-    }
 
 def stackSliceAndValidate(_slice: Slice, _stack: Stack):
   _stack.push(_slice)

@@ -1,6 +1,9 @@
-#array of slices
+#stack of slices
 from typing import List
 from lib.slice import Slice
+from typing import Dict
+import os
+import json
 
 class Stack:
   def __init__(self):
@@ -45,7 +48,6 @@ class Stack:
       faces[f'face{2}'][f'{_slice[2]}'] = True
     return True
 
-  
   def fromArray(self, arr):
     for s in arr:
       self.push(Slice(s))
@@ -54,3 +56,32 @@ class Stack:
   def reset(self):
     for s in self.slices:
       s.reset()
+  
+  def copy(self):
+    copyStack = Stack()
+    for s in self.slices:
+      copyStack.push(s)
+    return copyStack
+  
+  def configure(self, config): 
+    # config is an array of integers dictating which slices
+    # need to be rotated how many times
+    self.reset()
+    for i in range(len(config)):
+      for j in range(config[i]):
+        self[i].rotate()
+
+
+  @staticmethod
+  def stacksFromFile(filename):
+    dirname = os.path.dirname(os.path.realpath('__file__'))
+    filepath = os.path.join(dirname, filename)
+    
+    with open(filepath) as f:
+      dataset = json.load(f)
+      return {
+        'one': Stack().fromArray(dataset['one']),
+        'two': Stack().fromArray(dataset['two']),
+        'three': Stack().fromArray(dataset['three']),
+        'four': Stack().fromArray(dataset['four'])
+      }
