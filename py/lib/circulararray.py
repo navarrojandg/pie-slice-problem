@@ -11,6 +11,9 @@ class CircularArray:
   def __len__(self):
     return self.slices.__len__()
   
+  def __str__(self) -> str:
+    return '\n'.join([str(s) for s in self.slices])
+  
   def __getitem__(self, i):
     return self.slices[(self.startingIndex + i) % self.__len__()]
 
@@ -26,6 +29,31 @@ class CircularArray:
   def toArray(self) -> List[Slice]:
     return [self[i] for i in range(self.__len__())]
   
+  def configure(self, config):
+    for i in range(len(config)):
+      self[i].rotate(config[i])
+  
+  def validate(self) -> bool:
+    faces = {
+      '0': {},
+      '1': {},
+      '2': {}
+    }
+    for _slice in self.slices:
+      if f'{_slice[0]}' in faces['0']:
+        return False
+      if f'{_slice[1]}' in faces['1']:
+        return False
+      if f'{_slice[2]}' in faces['2']:
+        return False
+      faces['0'][f'{_slice[0]}'] = True
+      faces['1'][f'{_slice[1]}'] = True
+      faces['2'][f'{_slice[2]}'] = True
+    return True
+  
+  def append(self, s: Slice):
+    self.slices.append(s)
+
   @staticmethod
   def fromFile(filename):
     dirname = os.path.dirname(os.path.realpath('__file__'))
@@ -33,10 +61,9 @@ class CircularArray:
     with open(filepath) as f:
       dataset = json.load(f)
       c1 = CircularArray().fromArray(dataset['one'])
-      c2 = CircularArray(1).fromArray(dataset['two'])
+      c2 = CircularArray().fromArray(dataset['two'])
       c3 = CircularArray().fromArray(dataset['three'])
       c4 = CircularArray().fromArray(dataset['four'])
-
       return {
         'one': c1,
         'two': c2,

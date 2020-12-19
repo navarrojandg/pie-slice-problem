@@ -1,32 +1,72 @@
 from lib.slice import Slice
-from lib.stack import Stack
 from lib.solutions import bruteforce
 from lib.circulararray import CircularArray
 
-def solve(arr: CircularArray, colorRound='c'):
-  upperBound = len(arr)
-  for i in range(upperBound):
+colorSubset = {
+  'a': [
+    [1,0,0]
+  ],
+  'ab': [
+    [1,0,0],
+    [0,1,0],
+    [1,1,0],
+  ],
+  'abc': [
+    [1,0,0],
+    [0,1,0],
+    [1,1,0],
+    [0,0,1],
+    [1,0,1],
+    [0,1,1],
+    [1,1,1],
+  ]
+}
+
+taskQueue = []
+
+def solve(arr: CircularArray):
+  getAndEnqueueSubset('abc', arr)
+  processQueue()
+
+def getAndEnqueueSubset(subset, arr: CircularArray):
+  for i in range(len(arr)):
     arr.startingIndex = i
-    temp = Stack()
-    temp.push(arr[0])
-    a = temp[0][0]
-    b = temp[0][1]
-    c = temp[0][2]
-    for j in range(1, upperBound):
-      if colorRound == 'c':
-        if arr[j].hasColor(a) > -1 or arr[j].hasColor(b) > -1 or arr[j].hasColor(c) > -1:
-          temp.push(arr[j])
-      elif colorRound == 'b':
-        if arr[j].hasColor(a) > -1 or arr[j].hasColor(b) > -1:
-          temp.push(arr[j])
-      elif colorRound == 'a':
-        if arr[j].hasColor(a) > -1:
-          temp.push(arr[j])
-    if bruteforce.solve(temp) is False:
-      print(temp)
-      print(f'{len(temp)} {colorRound}')
-      print('\n')
-      if upperBound > len(temp):
-        newArr = CircularArray()
-        newArr.fromStack(temp)
-        solve(newArr, chr(ord(colorRound)-1))
+    temp = getSubsetFromArray(subset, arr)
+    if temp is not None:
+      taskQueue.append((subset, temp))
+
+def processQueue():
+  while len(taskQueue) > 0:
+    task = taskQueue.pop()
+    currRound = task[0]
+    currArr = task[1]
+    if bruteforce.solve(currArr) is False:
+      if currRound == 'abc':
+        getAndEnqueueSubset('ab', currArr)
+      if currRound == 'ab':
+        print(currArr)
+        print(f'{len(currArr)} {currRound}\n')
+        getAndEnqueueSubset('a', currArr)
+      if currRound == 'a':
+        print(currArr)
+        print(f'{len(currArr)} {currRound}\n')
+
+def getSubsetFromArray(subset, arr: CircularArray) -> CircularArray:
+  upperBound = len(arr)
+  a = arr[0][0]
+  b = arr[0][1]
+  c = arr[0][2]
+  temp = CircularArray()
+  temp.append(arr[0])
+  for j in range(1, upperBound):
+    for p in colorSubset[subset]:
+      n = [
+        p[0] * a,
+        p[1] * b,
+        p[2] * c,
+      ]
+      if arr[j].hasColorConfig(n):
+        temp.append(arr[j])
+        break
+  if len(temp) < upperBound:
+    return temp
