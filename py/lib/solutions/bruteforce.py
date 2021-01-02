@@ -1,20 +1,25 @@
 from lib.slice import Slice
-from lib.stack import Stack 
+from lib.circulararray import CircularArray
 
-def solve(stack: Stack):
-  permutationArray = getPermArray(len(stack))
+permutationArrayCache = {}
+
+def solve(arr: CircularArray):
+  permutationArray = getPermArray(len(arr))
   for p in permutationArray:
-    stack.configure(p)
-    if stack.validate() is True:
+    arr.configure(p)
+    if arr.validate() is True:
       return True
   return False
 
-def getPermArray(stackLength):
+def getPermArray(size):
+  if str(size) in permutationArrayCache:
+    return permutationArrayCache[str(size)]
   permuations = []
-  for i in range(3**stackLength):
-    for j in range(stackLength):
-      if j % stackLength == 0:
+  for i in range(3**size):
+    for j in range(size):
+      if j % size == 0:
         permuations.append([int(i/3**j % 3)])
       else:
         permuations[-1].append(int(i/3**j % 3))
+  permutationArrayCache[str(size)] = permuations
   return permuations

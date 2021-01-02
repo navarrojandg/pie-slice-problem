@@ -11,11 +11,10 @@ class Slice:
       self.sides = deque([int(s) for s in args[0].split(',')])
     Slice.count += 1
     self.id = str(Slice.count)
-    self.rotations = 0
-    self.checked = False
+    self.sidesCache = self.sides
   
   def __str__(self):
-    return f'id[{self.id}]\t\t' + '\t'.join(str(i) for i in self.sides) + f'\tR{self.rotations}'
+    return f'id[{self.id}]\t\t' + '\t'.join(str(i) for i in self.sides)
   
   def __len__(self):
     return len(self.sides)
@@ -26,15 +25,8 @@ class Slice:
   def __iter__(self):
     return iter(self.sides)
 
-  def rotate(self):
-    self.sides.rotate(1)
-    self.rotations += 1
-  
-  def reset(self):
-    self.checked = False
-    while(self.rotations % 3 != 0):
-      self.rotate()
-    self.rotations = 0
+  def rotate(self, count=1):
+    self.sides.rotate(count)
 
   def hasColor(self, color):
     if self[0] == color:
@@ -44,6 +36,18 @@ class Slice:
     if self[2] == color:
       return 2
     return -1
+  
+  def hasColorConfig(self, config):
+    if config[0] != 0:
+      if self.hasColor(config[0]) == -1:
+        return False
+    if config[1] != 0:
+      if self.hasColor(config[1]) == -1:
+        return False
+    if config[2] != 0:
+      if self.hasColor(config[2]) == -1:
+        return False
+    return True
   
   def isInColorRange(self, start, end):
     bounds = range(start, end+1)
