@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watchAll --verbose",
     "exam": "node . --colors=300 --slices=100",
-    "project": "node . --colors=90 --slices=30 --repeats=3"
+    "project": "node . --colors=90 --slices=30 --repeats=3",
+    "start": "python3 py/main.py"
   },
   "repository": {
     "type": "git",
